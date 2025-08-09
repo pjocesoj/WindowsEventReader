@@ -49,7 +49,7 @@
             // Arrange
             string providerName = "Application";
             string eventId = "1000";
-            string expectedExpression = "Provider[@Name='Application'] and EventID=1000";
+            string expectedExpression = "(Provider[@Name='Application'] and EventID=1000)";
             // Act
             string actualExpression = QueryCreator.EventProviderAndIdExpression(eventId, providerName);
             // Assert
