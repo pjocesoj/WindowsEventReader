@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WindowsEventReader
@@ -36,8 +37,11 @@ namespace WindowsEventReader
         /// </summary>
         /// <param name="eventId">event ID</param>
         /// <param name="star">* on beginning (whole query) or not (on end of another)</param>
+        /// <exception cref="ArgumentException">Thrown when eventId is null or empty.</exception>
         public static string EventIdQuery(string eventId, bool star = true)
         {
+            Guard.NotNullOrEmpty(eventId, nameof(eventId));
+
             if (star)
             {
                 return $"*[System[EventID={eventId}]]";
@@ -48,8 +52,11 @@ namespace WindowsEventReader
         /// create expression for filter events by EventID which can be part of complex query string
         /// </summary>
         /// <param name="eventId">event ID</param>
+        /// <exception cref="ArgumentException">Thrown when eventId is null or empty.</exception>
         public static string EventIdExpression(string eventId)
         {
+            Guard.NotNullOrEmpty(eventId, nameof(eventId));
+
             return $"EventID={eventId}";
         }
 
@@ -58,15 +65,23 @@ namespace WindowsEventReader
         /// </summary>
         /// <param name="eventIds">collection of ids</param>
         /// <param name="star">* on beginning (whole query) or not (on end of another)</param>
-        /// <returns></returns>
+        /// <exception cref="ArgumentException">Thrown when eventIds is null or empty.</exception>
         public static string EventIdQuery(IEnumerable<string> eventIds, bool star = true)
         {
+            Guard.NotNullOrEmpty(eventIds, nameof(eventIds));
+
             var sb = new StringBuilder(star ? "*[System[" : "[System[");
+            int i = 0;
+            int count = eventIds.Count();
             foreach (var id in eventIds)
             {
-                sb.Append($"EventID={id} or ");
+                sb.Append($"EventID={id}");
+                if (i < count - 1)
+                {
+                    sb.Append(" or ");
+                }
+                i++;
             }
-            sb.Remove(sb.Length - 4, 4); // Remove the last " or "
             sb.Append("]]");
             return sb.ToString();
         }
@@ -74,14 +89,23 @@ namespace WindowsEventReader
         /// create expression for filter events by multiple EventIDs which can be part of complex query string
         /// </summary>
         /// <param name="eventIds">collection of ids</param>
+        /// <exception cref="ArgumentException">Thrown when eventId is null or empty.</exception>
         public static string EventIdExpression(IEnumerable<string> eventIds)
         {
+            Guard.NotNullOrEmpty(eventIds, nameof(eventIds));
+
             var sb = new StringBuilder();
+            int i = 0;
+            int count = eventIds.Count();
             foreach (var id in eventIds)
             {
-                sb.Append($"EventID={id} or ");
-            }
-            sb.Remove(sb.Length - 4, 4); // Remove the last " or "
+                sb.Append($"EventID={id}");
+                if (i < count - 1)
+                {
+                    sb.Append(" or ");
+                }
+                i++;
+            }            
             return sb.ToString();
         }
         #endregion
@@ -93,8 +117,15 @@ namespace WindowsEventReader
         /// <param name="eventId">event ID</param>
         /// <param name="providerFullName">provider full name (including Microsoft-Windows and other prefixes)</param>
         /// <param name="star">* on beginning (whole query) or not (on end of another)</param>
+        /// <exception cref="ArgumentException">Thrown when eventId is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown when providerFullName is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown when eventId is not number.</exception>
         public static string EventProviderAndIdQuery(string eventId, string providerFullName, bool star = true)
         {
+            Guard.NotNullOrEmpty(eventId, nameof(eventId));
+            Guard.NotNullOrEmpty(providerFullName, nameof(providerFullName));
+            Guard.IsNumber(eventId, nameof(eventId));
+
             if (star)
             {
                 return $"*[System[Provider[@Name='{providerFullName}'] and (EventID={eventId})]]";
@@ -106,10 +137,16 @@ namespace WindowsEventReader
         /// </summary>
         /// <param name="eventId">event ID</param>
         /// <param name="providerFullName">provider full name (including Microsoft-Windows and other prefixes)</param>
-        /// <returns></returns>
+        /// <exception cref="ArgumentException">Thrown when eventId is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown when providerFullName is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown when eventId is not number.</exception>
         public static string EventProviderAndIdExpression(string eventId, string providerFullName)
         {
-            return $"(Provider[@Name='{providerFullName}'] and (EventID={eventId}))";
+            Guard.NotNullOrEmpty(eventId, nameof(eventId));
+            Guard.NotNullOrEmpty(providerFullName, nameof(providerFullName));
+            Guard.IsNumber(eventId, nameof(eventId));
+
+            return $"(Provider[@Name='{providerFullName}'] and EventID={eventId})";
         }
         #endregion
     }

@@ -27,7 +27,7 @@ public class QueryCreatorQueryTests
         Assert.AreEqual(expectedQuery, actualQuery);
     }
     #endregion
-    
+
     #region EventID (string)
     [TestMethod]
     public void EventIdQuery_ValidIdTrue_ShouldReturnCorrectQuery()
@@ -47,22 +47,17 @@ public class QueryCreatorQueryTests
         string eventId = "1000";
         string expectedQuery = "[System[EventID=1000]]";
         // Act
-        string actualQuery = QueryCreator.EventIdQuery(eventId,false);
+        string actualQuery = QueryCreator.EventIdQuery(eventId, false);
         // Assert
         Assert.AreEqual(expectedQuery, actualQuery);
     }
-    [TestMethod]//FAIL
-    public void EventIdQuery_EmptyId_ShouldReturnEmptyQuery()
+    [TestMethod]
+    public void EventIdQuery_EmptyId_Exception()
     {
         // Arrange
         string eventId = "";
-        string expectedQuery = "*[System[EventID=]]";
-        // Act
-        string actualQuery = QueryCreator.EventIdQuery(eventId);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
-
-        Assert.IsTrue(false,"should be exception");
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventIdQuery(eventId));
     }
     #endregion
     #region EventID (IEnumerable<string>)
@@ -84,32 +79,26 @@ public class QueryCreatorQueryTests
         var eventIds = new List<string> { "1000", "2000", "3000" };
         string expectedQuery = "[System[EventID=1000 or EventID=2000 or EventID=3000]]";
         // Act
-        string actualQuery = QueryCreator.EventIdQuery(eventIds,false);
+        string actualQuery = QueryCreator.EventIdQuery(eventIds, false);
         // Assert
         Assert.AreEqual(expectedQuery, actualQuery);
     }
 
-    [TestMethod]//FAIL
-    public void EventIdQuery_EmptyIds_ShouldReturnEmptyQuery()
+    [TestMethod]
+    public void EventIdQuery_EmptyIds_Exception()
     {
         // Arrange
         var eventIds = new List<string>();
-        string expectedQuery = "*[System[EventID=]]";
-        // Act
-        string actualQuery = QueryCreator.EventIdQuery(eventIds);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventIdQuery(eventIds));
     }
-    [TestMethod]//FAIL
-    public void EventIdQuery_NullIds_ShouldReturnEmptyQuery()
+    [TestMethod]
+    public void EventIdQuery_NullIds_Exception()
     {
         // Arrange
         List<string> eventIds = null;
-        string expectedQuery = "*[System[EventID=]]";
-        // Act
-        string actualQuery = QueryCreator.EventIdQuery(eventIds);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventIdQuery(eventIds));
     }
     #endregion
     #region Provider and EventID
@@ -137,47 +126,32 @@ public class QueryCreatorQueryTests
         // Assert
         Assert.AreEqual(expectedQuery, actualQuery);
     }
-    [TestMethod]//FAIL
-    public void EventProviderAndIdQuery_EmptyIdProvider_ShouldReturnEmptyQuery()
+    [TestMethod]
+    public void EventProviderAndIdQuery_EmptyId_Exception()
     {
         // Arrange
         string providerName = "Application";
         string eventId = "";
-        string expectedQuery = "*[System[Provider[@Name='Application'] and EventID=]]";
-        // Act
-        string actualQuery = QueryCreator.EventProviderAndIdQuery(eventId, providerName);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
-
-        Assert.IsTrue(false,"should be exception");
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventProviderAndIdQuery(eventId, providerName));
     }
-    [TestMethod]//FAIL
-    public void EventProviderAndIdQuery_EmptyProvider_ShouldReturnEmptyQuery()
+    [TestMethod]
+    public void EventProviderAndIdQuery_EmptyProvider_Exception()
     {
         // Arrange
         string providerName = "";
         string eventId = "1000";
-        string expectedQuery = "*[System[Provider[@Name=''] and EventID=1000]]";
-        // Act
-        string actualQuery = QueryCreator.EventProviderAndIdQuery(eventId, providerName);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
-
-        Assert.IsTrue(false,"should be exception");
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventProviderAndIdQuery(eventId, providerName));
     }
-    [TestMethod]//FAIL
+    [TestMethod]
     public void EventProviderAndIdQuery_SwapIdProvider_ShouldFail()
     {
         // Arrange
-        string providerName = "Application";
-        string eventId = "1000";
-        string expectedQuery = "*[System[Provider[@Name='Application'] and EventID=1000]]";
-        // Act
-        string actualQuery = QueryCreator.EventProviderAndIdQuery(providerName, eventId);
-        // Assert
-        Assert.AreEqual(expectedQuery, actualQuery);
-
-        Assert.IsTrue(false,"should be exception");
+        string providerName = "1000";
+        string eventId = "Application";
+        // Act + Assert
+        Assert.ThrowsException<ArgumentException>(() => QueryCreator.EventProviderAndIdQuery(eventId, providerName));
     }
     #endregion
 }
