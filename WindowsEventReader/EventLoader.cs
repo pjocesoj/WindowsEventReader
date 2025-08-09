@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 
-namespace ReadWindowsEvent
+namespace WindowsEventReader
 {
     public class EventLoader
     {
