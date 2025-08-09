@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsEventReader", "Windo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsEventReader.Test", "WindowsEventReader.Test\WindowsEventReader.Test.csproj", "{86B26074-4D51-4120-9AF7-26941DC53857}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsEventReader.ComputerPowerOnRanges", "WindowsEventReader.ComputerPowerOnRanges\WindowsEventReader.ComputerPowerOnRanges.csproj", "{02E91FC8-A0A2-41F9-9473-F7FC4B8C814C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{86B26074-4D51-4120-9AF7-26941DC53857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86B26074-4D51-4120-9AF7-26941DC53857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86B26074-4D51-4120-9AF7-26941DC53857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E91FC8-A0A2-41F9-9473-F7FC4B8C814C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E91FC8-A0A2-41F9-9473-F7FC4B8C814C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E91FC8-A0A2-41F9-9473-F7FC4B8C814C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E91FC8-A0A2-41F9-9473-F7FC4B8C814C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
